@@ -27,6 +27,9 @@ public class Curso {
     private Boolean activo;
 
 
+    public Curso(){
+
+    }
 
     public Curso (CrearCurso crearCurso) {
         this.nombre = crearCurso.nombre();

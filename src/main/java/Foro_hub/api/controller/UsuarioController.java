@@ -66,7 +66,7 @@ public class UsuarioController {
     @GetMapping
     @Operation(summary = "Lista solo usuarios habilitados")
     public ResponseEntity<Page<DetalleUsuario>> leerUsuariosActivos(@PageableDefault(size = 5, sort = {"id"}) Pageable paginacion){
-        var pagina = usuarioRepositorio.findAllByEnabledtrue(paginacion).map(DetalleUsuario::new);
+        var pagina = usuarioRepositorio.findAllByHabilitadoTrue(paginacion).map(DetalleUsuario::new);
         return ResponseEntity.ok(pagina);
     }
 
@@ -79,7 +79,7 @@ public class UsuarioController {
                 usuario.getNombre(),
                 usuario.getPerfiles(),
                 usuario.getEmail(),
-                usuario.getBorrarUsuario());
+                usuario.getHabilitado());
 
         return ResponseEntity.ok(datosUsuario);
     }
@@ -93,7 +93,7 @@ public class UsuarioController {
                 usuario.getNombre(),
                 usuario.getPerfiles(),
                 usuario.getEmail(),
-                usuario.getBorrarUsuario());
+                usuario.getHabilitado());
 
         return ResponseEntity.ok(datosUsuario);
     }
@@ -119,7 +119,7 @@ public class UsuarioController {
                 usuario.getNombre(),
                 usuario.getPerfiles(),
                 usuario.getEmail(),
-                usuario.getBorrarUsuario());
+                usuario.getHabilitado());
 
         return ResponseEntity.ok(datosUsuario);
     }

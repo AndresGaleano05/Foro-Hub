@@ -4,5 +4,5 @@ public enum Categoria {
     FISICA,
     QUIMICA,
     PROGRAMACION,
-    ADMINISTRADOR,
+    ADMINISTRACION,
 }

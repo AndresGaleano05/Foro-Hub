@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "topico")
 @Entity(name = "Topico")
@@ -43,6 +42,10 @@ public class Topico {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso_id")
     private Curso curso;
+
+    public Topico() {
+
+    }
 
     public Topico(CrearTopico crearTopico, Usuario usuario, Curso curso) {
         this.titulo = crearTopico.titulo();
@@ -96,5 +99,36 @@ public class Topico {
 
     //Getter
 
+    public long getId() {
+        return Id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public LocalDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public LocalDateTime getUltimaActualizacion() {
+        return ultimaActualizacion;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public Curso getCurso() {
+        return curso;
+    }
 }
 

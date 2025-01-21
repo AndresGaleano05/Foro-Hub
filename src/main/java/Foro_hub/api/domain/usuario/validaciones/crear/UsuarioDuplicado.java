@@ -4,7 +4,9 @@ import Foro_hub.api.domain.usuario.dto.CrearUsuario;
 import Foro_hub.api.domain.usuario.repositorio.UsuarioRepository;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UsuarioDuplicado implements ValidarCrearUsuario{
 
     @Autowired

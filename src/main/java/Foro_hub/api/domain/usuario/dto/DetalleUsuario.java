@@ -16,7 +16,7 @@ public record DetalleUsuario(
                 usuario.getNombre(),
                 usuario.getPerfiles(),
                 usuario.getEmail(),
-                usuario.getBorrarUsuario()
+                usuario.getHabilitado()
         );
     }
 }

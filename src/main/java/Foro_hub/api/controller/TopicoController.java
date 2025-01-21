@@ -84,7 +84,7 @@ public class TopicoController {
     @GetMapping
     @Operation(summary = "Lista de temas abiertos y cerrados")
     public ResponseEntity<Page<DetalleTopico>> leerTopicosNoEliminados(@PageableDefault(size = 5, sort = {"ultimaActualizacion"}, direction = Sort.Direction.DESC) Pageable paginacion){
-        var pagina = topicoRepositorio.findAllbyEstadoIsNot(Estado.BORRADO, paginacion).map(DetalleTopico::new);
+        var pagina = topicoRepositorio.findAllByEstadoIsNot(Estado.BORRADO, paginacion).map(DetalleTopico::new);
         return ResponseEntity.ok(pagina);
     }
 

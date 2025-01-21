@@ -10,17 +10,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 import java.util.Collection;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "usuarios")
-@Entity(name = "Usuarios")
+@Entity(name = "usuarios")
 @EqualsAndHashCode(of = "id")
-public class Usuario {
+public class Usuario implements UserDetails {
+
+    @SuppressWarnings("unused")
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,15 +35,18 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING)
     private Perfiles perfiles;
-    private Boolean borrarUsuario;
+    private Boolean habilitado;
 
+    public Usuario() {
+
+    }
 
     public Usuario(CrearUsuario crearUsuario, String contraseña){
         this.nombre = crearUsuario.nombre();
         this.email = crearUsuario.email();
         this.contraseña = contraseña;
         this.perfiles = Perfiles.USUARIO;
-        this.borrarUsuario = true;
+        this.habilitado = true;
     }
 
     public void actualizarUsuarioConContraseña(ActualizarUsuario actualizarUsuario, String contraseña) {
@@ -56,7 +63,7 @@ public class Usuario {
             this.perfiles = actualizarUsuario.perfiles();
         }
         if (actualizarUsuario.borrarUsuario()!= null){
-            this.borrarUsuario = actualizarUsuario.borrarUsuario();
+            this.habilitado = actualizarUsuario.borrarUsuario();
         }
     }
 
@@ -74,17 +81,28 @@ public class Usuario {
             this.perfiles = actualizarUsuario.perfiles();
         }
         if (actualizarUsuario.borrarUsuario()!= null){
-            this.borrarUsuario = actualizarUsuario.borrarUsuario();
+            this.habilitado = actualizarUsuario.borrarUsuario();
         }
     }
 
     public void eliminarUsuario(){
-        this.borrarUsuario = false;
+        this.habilitado = false;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.contraseña;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.nombre;
     }
 
     @Override
@@ -104,6 +122,33 @@ public class Usuario {
 
     @Override
     public boolean isEnabled() {
-        return borrarUsuario;
+        return habilitado;
+    }
+
+    // getter
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public Perfiles getPerfiles() {
+        return perfiles;
+    }
+
+    public Boolean getHabilitado() {
+        return habilitado;
     }
 }

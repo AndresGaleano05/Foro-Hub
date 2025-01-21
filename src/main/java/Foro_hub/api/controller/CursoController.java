@@ -31,7 +31,7 @@ public class CursoController {
     @PostMapping
     @Transactional
     @Operation(summary = "Registra nuevo curso en la base de datos.")
-    public ResponseEntity<DetalleCurso> crearTopico(@RequestBody @Valid CrearCurso crearCurso,
+    public ResponseEntity<DetalleCurso> crearCurso(@RequestBody @Valid CrearCurso crearCurso,
                                                     UriComponentsBuilder uriComponentsBuilder) {
         Curso curso = cursoRepository.save(new Curso(crearCurso));
 
@@ -43,30 +43,40 @@ public class CursoController {
     @Operation(summary = "Listado de cursos activos")
     public ResponseEntity<Page<DetalleCurso>> ListadoCursosActivos(@PageableDefault(size = 5,
             sort = {"id"})Pageable paginacacion) {
-        return ResponseEntity.ok(cursoRepository.findByActivoTrue(paginacacion).map(DetalleCurso::new));
+        var pagina = cursoRepository.findByActivoTrue(paginacacion).map(DetalleCurso::new);
+        return ResponseEntity.ok(pagina);
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Lee un solo cursor por Id")
-    public ResponseEntity<DetalleCurso> unCurso(@PathVariable Long id) {
-        return cursoRepository.findById(id)
-                .map(curso -> new DetalleCurso(curso.getId(), curso.getNombre(), curso.getCategoria(), curso.getActivo()))
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+//    @GetMapping("/{id}")
+//    @Operation(summary = "Lee un solo cursor por Id")
+//    public ResponseEntity<DetalleCurso> unCurso(@PathVariable Long id) {
+//
+//        Curso curso = cursoRepository.getReferenceById(id);
+//        var datosDelCurso = new DetalleCurso(
+//                curso.getId(),
+//                curso.getNombre(),
+//                curso.getCategoria(),
+//                curso.getActivo()
+//        );
+//            return ResponseEntity.ok(datosDelCurso);
+//    }
 
     @GetMapping("/{id}")
     @Transactional
     @Operation(summary = "Actualiza el nombre, categoria o estodo del curso")
     public ResponseEntity<DetalleCurso> actualizaCurso(@RequestBody @Valid ActualizarCurso actualizarCurso,
                                                        @PathVariable Long id) {
-        return cursoRepository.findById(id)
-                .map(curso->{
-                    curso.actualizarCurso(actualizarCurso);
-                    return new DetalleCurso(curso.getId(), curso.getNombre(),curso.getCategoria(),curso.getActivo());
-                })
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Curso curso = cursoRepository.getReferenceById(id);
+
+        curso.actualizarCurso(actualizarCurso);
+
+        var datosDelCurso = new DetalleCurso(
+                curso.getId(),
+                curso.getNombre(),
+                curso.getCategoria(),
+                curso.getActivo()
+        );
+        return ResponseEntity.ok(datosDelCurso);
     }
 
     @DeleteMapping("/{id}")

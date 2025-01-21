@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TopicoRepository extends JpaRepository<Topico, Long> {
     @SuppressWarnings("null")
-    Page<Topico> findALl(Pageable paginacion);
+    Page<Topico> findAll(Pageable paginacion);
 
-    Page<Topico> findAllbyEstadoIsNot(Estado estado, Pageable paginacion);
+    Page<Topico> findAllByEstadoIsNot(Estado estado, Pageable paginacion);
 
     Boolean existsByTituloAndMensaje(String titulo, String mensaje);
 
